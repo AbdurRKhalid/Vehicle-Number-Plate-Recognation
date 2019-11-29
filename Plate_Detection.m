@@ -1,47 +1,40 @@
 close all;
 clear all;
 
-im = imread('Number Plate Images/Image1.png');
-imgray = grb2gray(im);
-imbin = imbinarize(imgray);
+im = imread('Number Plate Images/image2.png');
+imgray = rgb2gray(im);
+imbin = im2bw(imgray);
 im = edge(imgray, 'prewitt');
 
-%find the Location of the Number Plate.
-Iprops = regionprops(im,'BoundingBox','Area', 'Image');
+%Below steps are to find location of number plate
+Iprops=regionprops(im,'BoundingBox','Area', 'Image');
 area = Iprops.Area;
 count = numel(Iprops);
-maxa = area;
+maxa= area;
 boundingBox = Iprops.BoundingBox;
-for i = 1:count
-    if maxa < Iprops(i).Area
-        maxa = Iprops(i).Area;
-        boundingBox=Iprops(i).BoundingBox;
-    end
-end
+for i=1:count
+   if maxa<Iprops(i).Area
+       maxa=Iprops(i).Area;
+       boundingBox=Iprops(i).BoundingBox;
+   end
+end    
 
-%Getting the Number Plate Area.
-im = imcrop(imbin, boundingBox);
-%Removing Object If the Widht if More Than 500.
-im = bwareaopen(~im, 500);
+im = imcrop(imbin, boundingBox);%crop the number plate area
+im = bwareaopen(~im, 500); %remove some object if it width is too long or too small than 500
 
-%Get Width.
-[h, w] = size(im);
+ [h, w] = size(im);%get width
 
 imshow(im);
 
-%Reading the Letter.
-Iprops = regionprops(im, 'BoundingBox', 'Area', 'Image');
-
+Iprops=regionprops(im,'BoundingBox','Area', 'Image'); %read letter
 count = numel(Iprops);
-%Initialzing the Variable for Number Plate String.
-noPlate[];
+noPlate=[]; % Initializing the variable of number plate string.
 
-for i = 1:count
-    ow = length(Iprops(i).Image(1,:));
-    oh = length(Iprops(i).Image(:,1));
-    if ow<(h/2) & oh>(h/3)
-        %Reading the Letter Corresponding to the Binary Image.
-        letter = Letter_detection(Iprops(i).Image);
-        noPlat = [noPlate letter];
-    end
+for i=1:count
+   ow = length(Iprops(i).Image(1,:));
+   oh = length(Iprops(i).Image(:,1));
+   if ow<(h/2) & oh>(h/3)
+       letter=Letter_detection(Iprops(i).Image); % Reading the letter corresponding the binary image 'N'.
+       noPlate=[noPlate letter] % Appending every subsequent character in noPlate variable.
+   end
 end
