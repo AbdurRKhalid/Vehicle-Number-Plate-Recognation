@@ -17,7 +17,7 @@ if ind == 1 || ind == 2
     letter = 'A';
 elseif ind == 3 || ind == 4
     letter = 'B';
-elseif inde == 5
+elseif ind == 5
     letter = 'C';
 elseif ind == 6 || ind == 7
     letter = 'D';
