@@ -1,8 +1,9 @@
 close all;
 clear all;
 
-im = imread('Number Plate Images/image2.png');
+im = imread('Number Plate Images/image1.png');
 imgray = rgb2gray(im);
+withoutNoise = wiener2(imgray,[5 5]);
 imbin = im2bw(imgray);
 im = edge(imgray, 'prewitt');
 
@@ -38,3 +39,16 @@ for i=1:count
        noPlate=[noPlate letter] % Appending every subsequent character in noPlate variable.
    end
 end
+
+datasource = 'matlabProject';
+password = '12345';
+username = 'root';
+connection = database(datasource, username,password);
+curs = exec(connection, ['SELECT 	driverdata.numberPlate'...
+    ' ,	driverdata.name'...
+    ' ,	driverdata.carModel'...
+    ' FROM 	matlabproject.driverdata '...
+    ' WHERE 	driverdata.numberPlate = ''MH12DE1400''']);
+
+curs = fetch(curs);
+disp(curs.data);
