@@ -11,3 +11,6 @@ A Database Query is Run Against the Final Number and Found Data is Returned.
 ## Usage
 It can be used for the Purpose of Fast Speed Image Reading on the Highways.
 It can be used for the Data Searching Purposes after Finding the Resultant Number Plate Number.
+
+## Accuracy Result
+It Has been found that the code is 67% accurate, as the result was generated against different types of images.
